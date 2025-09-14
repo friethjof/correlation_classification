@@ -1,5 +1,10 @@
 # Cassification of Correlation Patterns
 
+###In short
+
+
+
+###Description
 Program to evaluate the correlation patterns of a three-component ultracold system consisting of two bosonic and one fermionic species (A, B, C) interacting with gAB, gAC, gBC, gBB, gCC.
 
 The correlation function which should be analyzed correspond to the two-body correlation between two particles resolved on a grid.
@@ -16,3 +21,10 @@ The correlation function which should be analyzed correspond to the two-body cor
 ### Steps:
 
 - First gather data and make the files accessible.
+
+
+
+### File content
+
+- *gather_ext_data.py*: script which creates and collects correlation functions
+
