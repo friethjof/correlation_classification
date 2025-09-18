@@ -2,6 +2,7 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
+import argparse
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -46,9 +47,26 @@ time = [0]
 grid = np.linspace(-5, 5, 400)
 
 
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-n", help="number of batch")
+args = parser.parse_args()
+
+
 #-------------------------------------------------------------------------------
 # helper functions
 def get_1bd():
+    """Read in text-file where gpop file is stored and convert to numpy arrays.
+    Assume that the gpop-file has the name 'gpop' and is located in the 
+    current working directory.
+    Assume 3 species with densities separated by number of grid points n
+    
+    Args:
+        None
+    
+    Returns:
+        Three 1-dimensional array of shapes (n,), (n,), (n,)
+    """
     """Get and return the density population of species A (B) from path_gpop
     E.g. gpopA.shape = (2002,300); len(gpopA) = 2002."""
 
@@ -71,6 +89,15 @@ def get_1bd():
 
 
 def read_in_dm2(path_dm2f_raw):
+    """Read in text-file where dmat2 file is stored and convert to numpy array.
+
+    Args:
+        path_dm2f_raw (Path): path of the dmat2 file
+    
+    Returns:
+        Two-dim numpy array containing the two-body density and shape (n, n)
+    """
+
 
     # read in dmat-file
     dmat2_f = pd.read_csv(path_dm2f_raw, delim_whitespace=True, header=None)
@@ -88,7 +115,15 @@ def read_in_dm2(path_dm2f_raw):
 
 
 def generate_and_copy_files(src_top_dir):
-    """Main function: iterate through """
+    """Iterate through sub-folders in batch folder and perform the procedure as
+    described above.
+
+    Args:
+        src_top_dir (Path): path of the batch directroy
+    
+    Returns:
+        None
+    """
 
     batch_ID = src_top_dir.split('_')[1][-3:]
 
@@ -98,6 +133,8 @@ def generate_and_copy_files(src_top_dir):
 
         path_dest = path_data/f'batch_{batch_ID}'/f'run_{i:05d}'
 
+        if not (path_dir/'psi').is_file():
+            continue
  
         print(i)
         if path_dest.is_dir():
@@ -149,5 +186,45 @@ def generate_and_copy_files(src_top_dir):
 
 
 #-------------------------------------------------------------------------------
-# batch 1
-generate_and_copy_files('fbb_scan001_N2_gAB_-1_0')
+# choose between batches
+if args.n is None:
+    print('Please provide a value for the argument: -n')
+    exit()
+n_list = [eval(el) for el in args.n.split(',')]
+
+if 1 in n_list:
+    generate_and_copy_files('fbb_scan001_N2_gAB_-1_0')
+if 2 in n_list:
+    generate_and_copy_files('fbb_scan002_N2_gAB_-0_8')
+if 3 in n_list:
+    generate_and_copy_files('fbb_scan003_N2_gAB_-0_6')
+if 4 in n_list:
+    generate_and_copy_files('fbb_scan004_N2_gAB_-0_4')
+if 5 in n_list:
+    generate_and_copy_files('fbb_scan005_N2_gAB_-0_2')
+if 6 in n_list:
+    generate_and_copy_files('fbb_scan006_N2_gAB_0_0')
+if 7 in n_list:
+    generate_and_copy_files('fbb_scan007_N2_gAB_0_2')
+if 8 in n_list:
+    generate_and_copy_files('fbb_scan008_N2_gAB_0_4')
+if 9 in n_list:
+    generate_and_copy_files('fbb_scan009_N2_gAB_0_6')
+if 10 in n_list:
+    generate_and_copy_files('fbb_scan010_N2_gAB_0_8')
+if 11 in n_list:
+    generate_and_copy_files('fbb_scan011_N2_gAB_1_0')
+if 12 in n_list:
+    generate_and_copy_files('fbb_scan012_N2_gAB_-1_0')
+if 13 in n_list:
+    generate_and_copy_files('fbb_scan013_N2_gAB_-0_5')
+if 14 in n_list:
+    generate_and_copy_files('fbb_scan014_N2_gAB_0_0')
+if 15 in n_list:
+    generate_and_copy_files('fbb_scan015_N2_gAB_0_5')
+if 16 in n_list:
+    generate_and_copy_files('fbb_scan016_N2_gAB_1_0')
+if 17 in n_list:
+    generate_and_copy_files('fbb_scan017_N2_gCC0')
+if 18 in n_list:
+    generate_and_copy_files('fbb_scan018_N2_weak_gBC')
