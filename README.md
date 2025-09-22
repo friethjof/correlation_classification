@@ -2,37 +2,22 @@
 
 ###In short
 
+Group a large set (~18000 samples) of correlation matrices into different clusters. Each correlation matrix of size 400x400 correspond to a set of parameters. Find connection between clusters of correlation matrices and their parameters.
 
 
-###Description
-Program to evaluate the correlation patterns of a three-component ultracold system consisting of two bosonic and one fermionic species (A, B, C) interacting with gAB, gAC, gBC, gBB, gCC.
-In advance of this analysis, we have generated the data using the ML-MCTDHX method and calculated each scenario as a different job on a cluster.
+###Content
 
-The correlation function which should be analyzed correspond to the two-body correlation between two particles resolved on a grid.
+**protocol.md**
 
-- Size of the images: 400 x 400  (we have employed 400 grid points)
-- Various interspecies interaction strengths are varied: gAB, gAC, gBC, gBB, gCC.
+Gives more details on project and advancements.
 
-### Aim:
+gather_ext_data.py
 
-- We are interested in training a model that can reproduce the expected correlation pattern when passing interaction parameters which have not been probed.
-- Find features of correlation patterns and check whether they form clusters.
+- call external analysis scripts
+- read output-data (text files)
+- calculate correlation matrix
+- copy parameter file and store correlation matrices as npz in a separate folder structure
 
+create_parameter_DataFrame.ipynb
 
-### Procedure (chronologically):
-
-- Generate data (this has been done already), i.e., for each parameter configuration we have access to a psi-file which represents the many-body wave function and contains all information of the many-body problem.
-
-- Calculate from the psi-file the observables needed for the correlation function.
-
-- To reduce required storage: reduce image sizes and trim the edges, where the correlation fucntion is close to zero. **New image size: 200x200.**
-
-- Store the correlation functions as a npz file in a data-folder.
-
-
-
-
-### File content
-
-- *gather_ext_data.py*: script which creates and collects correlation functions.
-
+    - read in parameter-file and create corresponding DataFrame
