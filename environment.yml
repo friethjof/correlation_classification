@@ -1,0 +1,12 @@
+name: corr
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - matplotlib
+  - pandas
+  - scikit-learn
+  - pip
+  - pip:
+      - seaborn
