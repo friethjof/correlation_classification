@@ -207,18 +207,14 @@ Script: **create_DataFrame_corr_mat.ipynb**
 
 Here, we try to divide a minimal sample into two clusters and for this task compare k-means with DBSCAN.
 
-<div style="border: 2px solid #4CAF50; background-color: #e8f5e9; padding: 10px; border-radius: 5px;">
 **K-Means**
 
 Define the number of cluster centers $N$. Place the centers randomly in parameter space. Then assign each data point to the closest cluster. Determine for each cluster the new center and repeat this procedure. It stops when the within cluster variance is minimized.
-</div>
 
-
-<div style="border: 2px solid #4CAF50; background-color: #e8f5e9; padding: 10px; border-radius: 5px;">
-**DBSCAN**
+**How does DBSCAN work?**
 
 DBSCAN groups together points that lie in dense regions by expanding clusters from points that have at least a minimum number of neighbors within a given distance (eps). Points that don’t meet the density criterion are marked as noise or outliers and get the value -1.
-</div>
+
 
 ### 9.1 Find Clusters in Minimal Sample Set
 
