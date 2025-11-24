@@ -20,11 +20,11 @@ The aim is to group a large data set (~18000 samples) of matrices into different
 - create_DataFrame_corr_mat.ipynb
     - reduce dimensionality of t
 
-- red_sample_v1_gAB_gAC.py
+- find_clusters_red_sample_v1_gAB_gAC.py
 
-- red_sample_v2_gAB_gAC_gBC.py
+- find_clusters_red_sample_v2_gAB_gAC_gBC.py
 
-- red_sample_v3_gAB_gAC_gBC.py
+- find_clusters_red_sample_v3_gAB_gAC_gBC.py
 
 
 ## 3. Install
@@ -39,7 +39,7 @@ conda env create -f environment.yml
 ## 4. Scenario
 
 In this project, we consider three interacting species of atoms, i.e., species $A$, $B$, $C$.
-    
+
 - All species are represented by two particles, $N_A=N_B=N_C=2$.
 - All atoms have the same mass and are traped in a one-dimensional harmonic oscillator potential.
 - The atoms interact with each other via a contact interaction potential.
@@ -53,7 +53,7 @@ For each interaction strength combination we obtain the numerical exact ground s
 ## 5. Observable (Data Samples)
 
 We calculate the *two-body correlation matrix* as
-    
+
 $$ \mathcal{C}_{BC}^{(2)}(x_B, x_C) = \rho_{BC}^{(2)}(x_B, x_C) - \rho_{B}^{(1)}(x_B)\rho_{C}^{(1)}(x_C), $$
 
 where $\rho_{BC}^{(2)}(x_B, x_C)$ is the spatially resolved two-body density and gives the probability of finding/measuring at the same time one particle of species $B$ and one particle of species $C$ at the positions $x_B$ and $x_C$. This *conditional* probability is the compared to the *unconditional* one constructed by the product of the one-body densities $\rho_{B}^{(1)}(x_B)$ and $\rho_{C}^{(1)}(x_C)$, where, e.g., $\rho_{B}^{(1)}(x_B)$ gives the probability of finding one particle of species $B$ at position $x_B$ regardless of the locations of the other particles.
@@ -202,8 +202,7 @@ Script: **create_DataFrame_corr_mat.ipynb**
 - Combine df_parameter.p and the principle components and create the final DataFrame **df_main_std_pca_50.p** with size **18014x57**.
 
 
-
-## 9. Find Clusters by Applying K-Means and DBSCAN (1st attempt)
+## 9. Find Clusters in a Reduced Sample Set (1st attempt)
 
 Here, we try to divide a minimal sample into two clusters and for this task compare k-means with DBSCAN.
 
@@ -218,7 +217,7 @@ DBSCAN groups together points that lie in dense regions by expanding clusters fr
 
 ### 9.1 Find Clusters in Minimal Sample Set
 
-Script: **red_sample_v1_gAB_gAC.py**
+Script: **find_clusters_red_sample_v1_gAB_gAC.py**
 
 We consider $g_{BB}=g_{CC}=g_{BC}=0$ and require $g_{AB},g_{AC}\neq 0$ so that we expect only two correlation patterns. Namely, a correlated correlation pattern when $g_{AB} \cdot g_{AC} > 0$ and an anti-correlated correlation pattern if $g_{AB} \cdot g_{AC} < 0$ (see discussion above).
 
@@ -235,18 +234,18 @@ No hyper-parameter setting was able to uniquly classify all data points. The bes
 
 ### 9.2 Extension of Minimal Sample Set´
 
-Script: **red_sample_v2_gAB_gAC_gBC.py**
+Script: **rfind_clusters_ed_sample_v2_gAB_gAC_gBC.py**
 
 Here, we set $g_{BB}=g_{CC}=0$ and vary the parameters $g_{AB}, g_{AC}, g_{BC}$.
 
 Remind, that we expect an interplay between interspecies interaction $g_{BC}$ and induced/mediated interaction which is related to $g_{AB}\cdot g_{AC}$.
 
-However, using k-means and DBSCAN no hyper-parameter setting was able to pass the sanity check, i.e., to correctly classify the patterns appearing in the plane $g_{AB}$-$g_{AC}$ for $g_{BC}=g_{BB}=g_{CC}=0$.
+However, using k-means and DBSCAN no hyper-parameter setting was able to pass the sanity check, i.e., to correctly classify the patterns appearing in the $g_{AB}-g_{AC}$ plane for $g_{BC}=g_{BB}=g_{CC}=0$.
 
 This might be due the fact that the clustering algorithms cluster the correlation matrices according to absolute values and not according to the pattern of the matrices.
 
 
-## 10. Find Clusters by Applying K-Means and DBSCAN (2nd attempt)
+## 10. Find Clusters in a Reduced Sample Set (2nd attempt)
 
 
 ### 10.1 Data Preparation
@@ -261,7 +260,32 @@ Here, we **Normalize** each correlation matrix so that we only sort the correlat
 
 ### 10.2 Find Clusters
 
-Script: **red_sample_v3_gAB_gAC_gBC.ipynb**
+Script: **find_clusters_red_sample_v3_gAB_gAC_gBC.ipynb**
+
+**K-Means**
+
+We get the most *reasonable* results (the results which we would expect) for K-Means when considering 4 or 5 clusters. Now we describe the clusters in the case of 5 clusters:
+
+- Appearance of a correlation patttern when $g_{BC}<-0.05$ as well as when $g_{BC}<0.05$ and $g_{AB}\cdot g_{AC}>0$. So there is a small margin where the induced attraction overcomes a repulsive $g_{BC}$.
+- Two vanishing patterns when $g_{BC}$, and either $g_{AB}=0$ and/or $g_{AC}=0$.
+- Anti-correlation when $g_{BC}>0.05$ as well as when $g_{BC}>-0.05$ and $g_{AB}\cdot g_{AC}<0$. Also here is a small margin where the induced repulsion overcomes a attractive $g_{BC}$.
+- For 5 clusters: A separate cluster appears when $g_{BC}>0.5$ and $g_{AB}+g_{AC}>-0.5$.
+
+
+**DBSCAN**
+
+DBSCAN yields similar results as k-means. However, there are many outliers when $g_{BC}$ is large and the others $g_{AB}, g_{AC}$ are smaller.
+
+
+**Conclusion**
+
+All in all, k-means yields *visually* better results and seems more reliable.
+
+
+
+## 11. Find Clusters in the Full Sample Set
+
+Script: **find_clusters_full_sample.ipynb**
 
 
 
